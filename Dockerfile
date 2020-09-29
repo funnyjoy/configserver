@@ -7,4 +7,5 @@ WORKDIR /home/appuser
 ARG JAR_FILE 
 COPY target/${JAR_FILE} app.jar 
 ENV PROFILE=local 
+ENV DEFAULT_BRANCH=master
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]
