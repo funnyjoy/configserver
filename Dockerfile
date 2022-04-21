@@ -1,6 +1,6 @@
-FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u222-b10 
-RUN apk --no-cache add curl 
-RUN adduser -D -s /bin/sh appuser 
+FROM adoptopenjdk:11-jdk-hotspot
+RUN apt update && apt upgrade -y && apt install -y curl 
+RUN adduser --home /home/appuser --shell /bin/sh appuser 
 USER appuser 
 
 WORKDIR /home/appuser 
@@ -8,4 +8,9 @@ ARG JAR_FILE
 COPY target/${JAR_FILE} app.jar 
 ENV PROFILE=local 
 ENV DEFAULT_BRANCH=master
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]
+
+RUN echo "java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${PROFILE} -jar app.jar" > run.sh
+
+#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]
+ENTRYPOINT ["sh", "run.sh"]
+
