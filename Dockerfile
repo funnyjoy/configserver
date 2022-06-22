@@ -9,7 +9,7 @@ COPY target/${JAR_FILE} app.jar
 ENV PROFILE=local 
 ENV DEFAULT_BRANCH=master
 
-RUN echo "java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${PROFILE} -jar app.jar" > run.sh
+RUN echo "java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=\${PROFILE} -jar app.jar" > run.sh
 
 #ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]
 ENTRYPOINT ["sh", "run.sh"]
